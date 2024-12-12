@@ -8,7 +8,7 @@ Using **Cross-Compiling Win32** and  X11 forwarding when required
 -- axf-pycrust-project
 
 
-For more information, visit the [main documentation page](https://nicojane.github.io/APP-X11-Forward-PyCRust-Development-Template-Stack/index.html). You can find other Docker Template Stack (DTS) containers  [here.](https://nicojane.github.io/Docker-Template-Stacks-Home/)
+For more information, visit the [main documentation page](https://nicojane.github.io/APP-X11-Forward-PyCRust-Dev-Template-Stack/index.html). You can find other Docker Template Stack (DTS) containers  [here.](https://nicojane.github.io/Docker-Template-Stacks-Home/)
 
 <sub> &nbsp;&nbsp;&nbsp;&nbsp; *Is this a local repository project? If so, use this local link to access the [main page](./index) file. <sub>
 <br><br>
