@@ -1,0 +1,23 @@
+# Workspace Wrapper for the libraries build in 'api_interface_rust'
+#
+# This enables us to build all sub folders in one go.
+#   Use VSC ->Terminal -Run Tasks ->  'AFX CREATE: new Rust Business Library' to
+#   create a new library and it will be automatically  added it here.
+#
+#   Note: when removing a library it must be removed manual here
+#
+[workspace]
+# See 'REMARK 1 name conventions' in: ./api_interface_rust/core_lib/cargo.toml
+members = [ "api_interface_rust/tool_lib", "api_interface_rust/core_lib"]
+
+resolver = "2"                              # use the new resolver 2021    
+
+
+[profile.release]   
+lto = true                                  # Link Time Optimization to help with inter-language linkage issues  
+incremental = true                          # Use incremental build to speed it up
+
+[profile.dev]                               # Profiles ONLY in the workspace Cargo!
+debug = true                                # Default in dev profile
+opt-level = 0
+

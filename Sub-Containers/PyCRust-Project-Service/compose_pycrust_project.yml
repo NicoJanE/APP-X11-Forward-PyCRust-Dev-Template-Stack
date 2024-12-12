@@ -1,0 +1,48 @@
+# This file is part of: Afx-X11-Forward-PyCRust-Template-Stack
+# Copyright (c) 2024 Nico Jan Eelhart.
+#
+# This source code is licensed under the MIT License found in the  'LICENSE.md' file in the root directory of this source tree.
+#
+        
+# See '.env' file for network options        
+networks: 
+    x11_forward-network-pycrust-fixed: 
+        external: true 
+        name: ext_x11_forward-network-pycrust-fixed
+
+volumes:
+  vol_wpf:  
+
+  
+services:               
+    axf-pycrust-project:                 
+        extends:
+            file: ../../Base-Container/Afx-Base-PyCRust-Service/compose_app_forward_x11_pycrust_base.yml      # Relative path to the compose file from which it extends
+            service: axf-basic-pycrust-service                                                                # extends from  service name
+        build:
+            context: .  
+            dockerfile: Docker_PyCRust_Project          # Docker command to execute for this compose
+            args:
+                PRJ_NAME_ARG: ${PRJ_NAME_ARG}           # Set PRJ_NAME_ARG with the.env file variable. Define PRJ_NAME_ARG also in Dockerfile 
+                PRJ_BASE_ARG: ${PRJ_BASE_ARG}
+                PORT: ${PORT}
+                PRJ_TYPE_USE_CUSTOM_APP: ${PRJ_TYPE_USE_CUSTOM_APP}
+        ports:
+            - "${PORT}:${PORT}"                     # First host second container    
+        image: eelhart/appforwardx11-pycrust-base:latest # This name can be used to extend or chain this image.
+        environment:
+            - PORT=${PORT}                      # Pass variable from .env to PORT (1e), this is available in the 
+                                                # container(ENV) and in dockerfile, during building after
+                                                # defining: 'ARG PORT' in the docker file
+            - DISPLAY=host.docker.internal:0    # THIS relays the Linux output to vcxsrv(Xlaunch) Also added in the Docker file!   
+                                                
+        working_dir: ${PRJ_BASE_ARG}/$PRJ_NAME_ARG
+        networks:
+            x11_forward-network-pycrust-fixed:
+              ipv4_address: ${FIXED_IP}         # Use a fixed IP address for this container
+        volumes:
+            - ./shared-host:/shared-host        # Bind volume to and from our shared-host host folder
+            - /tmp/.X11-unix:/tmp/.X11-unix     # MOUNTS the X11 socket GUI directory
+        command: ["/bin/sh", "-c", "while sleep 1000; do :; done"]  # use this in case of err, let's you get in(CMD)
+        
+# docker-compose -f compose_pycrust_project.yml up -d --build --force-recreate --remove-orphans   

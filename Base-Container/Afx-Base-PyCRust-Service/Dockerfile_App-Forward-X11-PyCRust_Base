@@ -1,0 +1,87 @@
+# This file is part of: App-X11-Forward-PyCRust-Development-Template-Stack
+# Copyright (c) 2024 Nico Jan Eelhart
+#
+# This source code is licensed under the MIT License found in the  'LICENSE.md' file in the root directory of this source tree.
+#
+
+# GOAL
+# Combine Python, Rust and C/C++, to develop Desktop/Web application both for Linux and Windows (cross compiling)
+# The Windows/Linux Desktop GUI is forwarded to the (Window) Host 
+# 
+# 	BEFORE executing the compose Docker command make sure you have read 'howto_create_a_dev_container.md' in the Howtos folder. 
+
+
+# Use an Ubuntu base image
+FROM ubuntu:24.04
+
+# For GUI forwarding
+ENV DISPLAY=host.docker.internal:0
+ENV CC=x86_64-w64-mingw32-gcc
+ENV CXX=x86_64-w64-mingw32-g++
+
+# Install necessary packages for X11 and  to build .win32
+# gprof. 'binutils' contains 'gprof' (supports cross compiling MinGW) 'build-essential' contains: 'binutils'
+# gdb-mingw-w64-target contains 32 and 64 wine gdbserver for debugging
+RUN apt-get update && apt-get install -y \
+    mingw-w64 \
+	gdb-mingw-w64-target \
+    cmake \
+    gdb \
+    cppcheck \
+    curl \
+    nano \
+    x11-apps \
+    build-essential \
+    git \
+    scite \
+    net-tools \
+    rsync \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install necessary packages; Python 
+# 
+RUN apt-get update && apt-get install -y \
+    python3 python3-pip \
+    pipx
+# Set PATH environment variable to include pipx bin directory (persistent across layers)
+ENV PATH="/root/.local/bin:$PATH"
+
+# Install Rust using rustup install latest stable Rust version
+# Enables us to use: 'Rustup update' to update
+# Use: 'rustup show' to display if a new version is available
+RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+ENV PATH="/root/.cargo/bin:${PATH}"
+# Add compile support for Win32 64 bits
+RUN rustup target add x86_64-pc-windows-gnu
+
+
+
+# install the Win32 and win64 executable layers and tools so we run Windows programs with 'wine' and debug them
+RUN dpkg --add-architecture i386
+RUN apt-get update && apt-get install -y \
+    wine64 \
+    wine32 \
+    && rm -rf /var/lib/apt/lists/*
+
+# fix wine64
+RUN ln -s /usr/lib/wine/wine64 /usr/bin/wine64
+
+# Set the WINEPATH needed to locate Windows DLL files, 32 Bits and 64 Bits
+# Make sure to set this in the Windows style, so wine gets it (Z:\\...) 
+# 	When an app can not find the dll, use the command:
+#		find / -name "xyz"
+#	To look for it if it returns the file, add the path to that file to the WINEPATH below
+#
+ENV WINEPATH="Z:\\usr\\lib\\gcc\\i686-w64-mingw32\\13-win32;Z:\\usr\\lib\\gcc\\x86_64-w64-mingw32\\13-win32"
+
+
+# Expose necessary ports if required (e.g., for debugging or network services)
+EXPOSE 8070
+
+# Set the default shell to bash
+SHELL ["/bin/bash", "-c"]
+
+
+# Command to keep the container running
+CMD ["bash"]
+

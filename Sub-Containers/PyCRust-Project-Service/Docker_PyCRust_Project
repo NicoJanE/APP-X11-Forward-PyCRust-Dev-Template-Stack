@@ -1,0 +1,104 @@
+# This file is part of: Afx-X11-Forward-PyCRust-Template-Stack
+# Copyright (c) 2024 Nico Jan Eelhart
+#
+# This source code is licensed under the MIT License found in the  'LICENSE.md' file in the root directory of this source tree.
+#
+
+# *** Extending/Chaining ***
+# This requires that the 'Afx-Base-PyCRust-Service' image is build()        
+#        - In the folder: '../Sub-Containers\Afx-X11-Forward-PyCRust-Project-Service\'  Execute:   
+#          docker-compose -f  compose_app_forward_x11_pycrust_base.yml up -d --build --force-recreate  --remove-orphans
+#
+#          After that the image is present and the container,you can continue with this installation
+#
+FROM  eelhart/appforwardx11-pycrust-base:latest
+
+# For GUI forwarding
+ENV DISPLAY=host.docker.internal:0
+
+
+# Install maturin using pipx in an isolated environment. 
+# Maturin is used to build Python packages from Rust, particularly with PyO3(cffi alternative, see below).
+# pipx helps avoid conflicts with system-wide Python installations.
+#
+# Note: `pip install maturin --break-system-packages` is not recommended due to potential conflicts with system packages.
+RUN pipx install maturin
+
+# Install cffi using the system package manager.
+# `cffi` is used to:
+#  1. Call C code from Python
+#  2. Call Rust code by defining a C-compatible interface in Rust, allowing Python to call Rust functions through the C interface.
+#     This approach is similar to using `ctypes` but allows for more flexibility and control, and is  more powerful in certain scenarios.
+#
+#     Note: `ctypes` is generally simpler and works directly with shared libraries but lacks some of the flexibility and power of cffi.
+RUN apt-get update && apt-get install -y python3-cffi 
+#
+#     Note: `pipx` cannot be used to install libraries like cffi.
+
+
+# 1) Set the working directory
+WORKDIR /projects
+
+# 2) Set arguments, MAKE SURE the environment variables are assigned here (file:.env) so there available.
+ARG PRJ_NAME_ARG
+ENV PRJ_NAME_ARG=${PRJ_NAME_ARG}
+ARG PRJ_BASE_ARG
+ENV PRJ_BASE_ARG=${PRJ_BASE_ARG}
+
+ENV DISPLAY=host.docker.internal:0
+ARG PRJ_TYPE_USE_CUSTOM_APP
+
+# 3) Define build-time argument and use the build argument as an environment variable available at runtime
+ARG PORT_ARG
+ENV PORT=${PORT_ARG}
+EXPOSE ${PORT}
+
+# 4) Output to user the parameters which will be used (Use the shell form explicitly to ensure environment variable expansion)
+RUN echo "    - Project Name: ${PRJ_BASE_ARG}/${PRJ_NAME_ARG} for the PyCRust application"
+RUN /bin/sh -c "mkdir -p ${PRJ_BASE_ARG}"
+WORKDIR ${PRJ_BASE_ARG}
+
+
+# 6) Visual Studio Code Settings and extensions for this container
+COPY .vscode/ ${PRJ_BASE_ARG}/${PRJ_NAME_ARG}/.vscode/
+COPY .devcontainer/ ${PRJ_BASE_ARG}/${PRJ_NAME_ARG}/.devcontainer/
+
+
+# 7) Create a Win32 project based one  of our templates
+RUN mkdir -p ${PRJ_BASE_ARG}
+WORKDIR ${PRJ_BASE_ARG}
+#
+
+# Copy the necessary files from the build context into the Docker image
+# Otherwise we can not reach the files via the script below
+COPY Project-Templates/ ${PRJ_BASE_ARG}/Project-Templates/
+
+
+# Make sure we easily can identify the terminal session
+RUN echo 'PS1="\[\033[1;37;46m\]Docker:\[\033[0m\]\[\033[0;33m\]${debian_chroot:+($debian_chroot)}\u\[\033[0m\]:\[\033[1;36m\] Afx-PyCRust \[\033[0m\]../\W# "' >> ~/.bashrc
+
+
+# Use conditional logic to handle different scenarios.
+#
+# Note: rsync will automatically create the destination directory and sub Dir's 
+#       if it doesn’t exist (use '-a' and add '/'' to last target dir)
+#
+RUN if [ "$PRJ_TYPE_USE_CUSTOM_APP" = "Yes" ]; then \
+       echo "Custom app mode is enabled, do copy"; \
+	   mkdir -p ${PRJ_NAME_ARG}/_build; \
+       rsync -a Project-Templates/GUI-Application/ ${PRJ_BASE_ARG}/${PRJ_NAME_ARG}/ ;  \
+#       rsync -a ../../.devcontainer/ ${PRJ_BASE_ARG}/${PRJ_NAME_ARG}/.devcontainer/ ;  \
+    else \
+       if [ "$PRJ_TYPE_USE_CUSTOM_APP" = "Alternative_1" ]; then \
+           echo "    - 'Alternative 1' project, Name: ${PRJ_BASE_ARG}/${PRJ_NAME_ARG} GUI based application )"; \
+       else \
+           echo "\n\n\n\nRemark no template is copied! . Nothing to do\n\n"!!; \
+       fi \
+    fi
+     
+
+# Make sure the container automatically opens in our project folder
+# does not work, but at least the the default directory is our project root dir.(see .devcontainer/devcontainer)
+RUN sed -i "s|__NJE-1970__|${PRJ_BASE_ARG}/${PRJ_NAME_ARG}|g" ${PRJ_BASE_ARG}/${PRJ_NAME_ARG}/.devcontainer/devcontainer.json
+
+

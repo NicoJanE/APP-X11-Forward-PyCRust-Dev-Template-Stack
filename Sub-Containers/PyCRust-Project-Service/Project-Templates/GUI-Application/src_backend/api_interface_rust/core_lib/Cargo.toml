@@ -1,0 +1,67 @@
+[package]
+#
+# REMARK 1. Name convention
+# The package name will become the dependency reference name for import applications because we did not set a 'name' in the [lib] section.
+# The output name will become: 'libcore_lib'. Rust will always add the 'lib' prefix, and this cannot be prevented, even if you define this:
+#
+#       // Assuming we have: [package] name = core_lib
+#       [lib]        
+#       path = "src/lib.rs"
+#       name = "core"
+#
+# This will generate the output name 'libcore', which is okayish, but the worse thing about this is that you have to reference this 
+# library as 'core' when importing it in the application source file, thus: 
+#               
+#           'use core::*;'          // Not okay for me
+#           fn main() ...
+#
+# In the corresponding Cargo.toml, you need to reference the library as:
+#
+#           [dependencies]
+#           core_lib = { path = "../../lib_core" }        // inconsistent
+#
+# This is inconsistent, so I have chosen this solution:
+#
+#   [package]
+#   name = "core_lib"             # Output name: 'libcore_lib' — a bit unfortunate with the double 'lib' in the name, but okay.
+#
+#   - In main.rs I use: 
+#       'use core_lib::add;'
+#   - In the imported application's Cargo.toml I use:
+#       'core_lib = { path = "../../lib_core" }'    
+#
+# I do understand that you, by default, add the 'lib' prefix, but why force it? And why still force it if you give me an option to change the output name of the library ([lib].name)?
+#
+name = "core_lib"       
+version = "0.1.0"
+edition = "2021"
+
+
+[lib]
+# REMARK 2
+# Important: To use be able to use in a Rust client(test) application we need to add "lib", this creates a 'Rust static library' (extension .rlib)
+# The "staticlib" definition creates a pure static library without Rust spcifics, usable for other languages (C/C++). extension is: .a or .lib
+crate-type = ["cdylib", "lib"]
+# See REMARK 1 on top
+# path = "src/lib.rs"
+# name = "core2"
+# crate-type = ["staticlib"]
+
+
+[dependencies]
+cxx = "1.0"
+libloading = "0.8"
+lazy_static = "1.5.0"
+
+
+[build-dependencies]
+cxx-build = "1.0"
+
+
+# PROFILES SHOULD BE IN THE WORKSPACE ONLY
+# [profile.release]
+# lto = true  # Link Time Optimization to help with inter-language linkage issues  
+
+# [profile.dev]
+# debug = true  # Default in dev profile
+# opt-level = 0
