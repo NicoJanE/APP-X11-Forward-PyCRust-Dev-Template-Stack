@@ -30,8 +30,9 @@ Since this template uses an Afx-X11-Forward approach, any desktop GUI developed 
 ### Quick setup (general)
 This is the general quick setup procedure. In the sub-container project you may find index.md file with specific quick setup instruction in case these instruction make you feel insecure.
 
-If you have previously installed this container, you can use these general quick setup steps below. Otherwise please first read the [how to create a development container](https://nicojane.github.io/APP-X11-Forward-PyCRust-Development-Template-Stack/Howtos/howto_create_a_dev_container) document. or refer to one of the 'index.md' files in the sub-container, when available it contains detailed instructions for the specific sub-container  
+If you have previously installed this container, you can use these general quick setup steps below. Otherwise please first read the [how to create a development container](https://nicojane.github.io/APP-X11-Forward-PyCRust-Dev-Template-Stack//Howtos/howto_create_a_dev_container) document. or refer to one of the 'index.md' files in 
 
+the sub-container, when available it contains detailed instructions for the specific sub-container  
 
 1) **Create the WSLs**{: style="color:green; "} <br>
 In case you don't have the **WSL** container, open CMD in a base container folder, for example: *'APP-X11-Forward-PyCRust-Development-Template-Stack\Base-Container\Afx-Base-PyCRust-Service\'* and execute:
