@@ -630,7 +630,7 @@ There is a simple backup script which you can use to backup the project to **sha
     <span style="color: #097df1ff; font-size: 26px;">Appendix I</span> <span style="color: #409EFF; font-size: 16px; font-style: italic;"> - Quick setup </span>
 </summary>
 
-## Appendix 1. Quick setup
+## Quick setup
 
 If you have previously installed this container, you can use the quick setup steps below. Otherwise please first read the [how to create a development container](https://nicojane.github.io/APP-X11-Forward-PyCRust-Development-Template-Stack/Howtos/howto_create_a_dev_container) document.
 
@@ -646,7 +646,6 @@ If you have previously installed this container, you can use the quick setup ste
 ### Start WSL
 
   <pre class="nje-cmd-multi-line-sm">wsl -d docker-dev-pycrust  </pre>
-
 
 ### Attach docker
 
@@ -672,22 +671,21 @@ code --install-extension xyz.local-history
 code --install-extension vadimcn.vscode-lldb
 </pre>
 
+<br>
 </details>
-
 
 <details>
 <summary class="clickable-summary"> <span class="summary-icon"></span>
-    <span style="color: #097df1ff; font-size: 26px;">Appendix I</span> <span style="color: #409EFF; font-size: 16px; font-style: italic;"> -  pycrust template structure </span>
+    <span style="color: #097df1ff; font-size: 26px;">Appendix II</span> <span style="color: #409EFF; font-size: 16px; font-style: italic;"> -  pycrust template structure </span>
 </summary>
 
-## Appendix 2. pycrust template structure
+## Pycrust template structure
 
 Following is a concept diagram of the sample Rust library 'core_lib' which internally opens an other C++ library and call a function from there
 
 ![alt text](Main_v2_snip.jpg)
 
 </details>
-
 
 <span style="color: #6d757dff; font-size: 10px; font-style: italic;"> <br>
 This file is part of: **Afx-X11-Forward-PyCRust-Template-Stack**
