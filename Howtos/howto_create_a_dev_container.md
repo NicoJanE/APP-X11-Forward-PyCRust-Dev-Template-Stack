@@ -620,10 +620,7 @@ In All case you must make sure tha the Rust library is build AFX BUILD task 1. T
 
 There is a simple backup script which you can use to backup the project to **shared-host** directory. In a Docker shell (root) execute:
 <pre class="nje-cmd-one-line-sm">./_backup </pre>
-
-
-<br><br><br>
-
+<br>
 
 <details>
 <summary class="clickable-summary"> <span class="summary-icon"></span>
