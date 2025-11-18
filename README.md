@@ -1,40 +1,33 @@
 
+# Python, Rust, C++ <span style="color: #409EFF; font-size: 0.6em; font-style: italic;"> -  Docker Container</span>
 
-# What
-A Docker Template Stack Container designed for creating a frontend application in Python, paired with a backend service built using Rust and/or C/C++.
-Using **Cross-Compiling Win32** and  X11 forwarding when required
+## ℹ️ Introduction
 
-**Available Sub Containers**
--- axf-pycrust-project
+A Docker Template Stack Container designed for creating a frontend application in Python, paired with a backend service built using Rust and/or C/C++. The stack allows you to build both a native Linux version and a cross-compiled Win32 version using MinGW, with support for Visual Studio Code and related tools.
 
+Since this template uses an Afx-X11-Forward approach, any desktop GUI developed within the container will be forwarded to the Windows host via the X11 Protocol, using tools like XLaunch on the host.
 
-For more information, visit the [main documentation page](https://nicojane.github.io/APP-X11-Forward-PyCRust-Dev-Template-Stack/index.html). You can find other Docker Template Stack (DTS) containers  [here.](https://nicojane.github.io/Docker-Template-Stacks-Home/)
-
-<sub> &nbsp;&nbsp;&nbsp;&nbsp; *Is this a local repository project? If so, use this local link to access the [main page](./index) file. <sub>
+Please visit the [main documentation page](https://nicojane.github.io/APP-X11-Forward-PyCRust-Dev-Template-Stack/index.html) for an introduction and setup instructions
 <br><br>
 
+<p align="center">
+  <a href="https://nicojane.github.io/Docker-Template-Stacks-Home/">
+    <img src="assets/images/DTSfooter.svg" alt="DTS Template Stacks" width="400" />
+  </a>
+</p>
 
-<details closed>  
-  <summary class="clickable-summary">
-  <span  class="summary-icon"></span> 
-  Side note: Preview Markdown Files(.md)
-  </summary> 	<!-- On same line is failure, Don't indent the following Markdown lines!  -->
+<sub><i> This file is part of:  X11 GUI Development Template Stack
+Copyright (c) 2025 Nico Jan Eelhart. This source code is licensed under the MIT License found in the  'LICENSE.md' file in the root directory of this source tree.
+</i></sub>
 
-> <br>
-> 
-> ### Preview Markdown Files(.md)
->
->To preview the Markdown (.md) files in this project, one of the best solutions is to open these files in Visual Studio Code (VSC) and install the plugin: **Markdown Preview GitHub Styling** (Tested with version 2.04). Other plugins, or plugins for other programs, may not always work correctly with the file links in the documentation. I use the file link syntax supported by GitHub (Jekyll), which is also compatible with the above-mentioned plugin.
->
-> To display the Preview screen in VSC: 
->- Ensure that you are **not** working in ***Restricted mode***.
->- Click on the "file.md" tab and choose: "Open preview." 
->- Alternatively, you can click the 'Open Preview to the Side' button at the top right. 
->
-><br>
-<a href="https://github.com/mjbvz/vscode-github-markdown-preview-style" target="_blank">Click here for more information on the Markdown Preview GitHub Styling plugin</a>
-</details>
+<p align="center">─── ✦ ───</p>
 
 
-<br><br>
-<small>Version: 0.9 </small>
+ 
+
+
+
+
+
+
+
