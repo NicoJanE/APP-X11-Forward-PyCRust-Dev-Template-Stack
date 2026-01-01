@@ -688,7 +688,7 @@ Following is a concept diagram of the sample Rust library 'core_lib' which inter
 <br>
 
 <span style="color: #6d757dff; font-size: 13px; font-style: italic;"> 
-<i><b>License</b><br>This file is part of: **Python/Rust/C++ Development Stack**  Copyright (c) 2025-2026 Nico Jan Eelhart.This repository is [MIT licensed](MIT-license.md) and free to use. For optional commercial support, customization, training, or long-term maintenance, see [COMMERCIAL.md](COMMERCIAL.md).</i>
+<i><b>License</b><br>This file is part of: **Python/Rust/C++ Development Stack**  Copyright (c) 2025-2026 Nico Jan Eelhart.This repository is [MIT licensed](../MIT-license.md) and free to use. For optional commercial support, customization, training, or long-term maintenance, see [COMMERCIAL.md](../COMMERCIAL.md).</i>
 </span>
 
 <br><br>
